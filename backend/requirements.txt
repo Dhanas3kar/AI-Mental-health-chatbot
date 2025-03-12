@@ -1,0 +1,7 @@
+# requirements.txt - Required dependencies
+"""
+Flask
+flask-cors
+google-generativeai
+mysql-connector-python
+"""
