@@ -542,7 +542,22 @@
                 initializeApp();
             });
 
+            // Event Delegation for dynamically added quick replies
+            document.body.addEventListener('click', (e) => {
+                if (e.target.classList.contains('quick-reply-btn')) {
+                    handleUserMessage(e.target.textContent);
+                } else if (e.target.classList.contains('mood-option')) {
+                    const mood = e.target.getAttribute('data-mood');
+                    const value = e.target.getAttribute('data-value');
+                    updateMood(value, mood);
+                    moodModal.hide();
+                    addUserMessage(`Logged mood: ${mood}`);
+                    addBotMessage(`Thanks for sharing that you're feeling ${mood.toLowerCase()}. Remember, all feelings are valid.`);
+                }
+            });
 
+            // --- App Initialization ---
+            initializeApp();
         });
     </script>
 </body>
