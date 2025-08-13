@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mental Health Chatbot</title>
+    <title>MindCare AI - Your Mental Health Companion</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <style>
         :root {
             --primary-color: #5e72e4;
@@ -14,453 +13,350 @@
             --accent-color: #ff6b6b;
             --dark-color: #2d3748;
             --light-color: #ffffff;
+            --text-muted-color: #6c757d;
         }
-        
+
         body {
             background-color: #f5f7fa;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-        
-        .navbar-brand {
-            font-weight: 700;
-            color: var(--primary-color);
-        }
-        
+
+        /* --- Major Sections --- */
         .hero-section {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
-            padding: 3rem 0;
-            border-radius: 0 0 20px 20px;
+            padding: 4rem 0;
+            border-radius: 0 0 25px 25px;
             margin-bottom: 2rem;
         }
-        
+
+        .features-section, footer {
+            padding: 3rem 0;
+        }
+
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            margin-top: 3rem;
+        }
+
+        /* --- Chat Components --- */
         .chat-container {
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
             border-radius: 15px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 75vh;
         }
-        
+
         .chat-box {
-            height: 400px;
+            height: 450px;
             overflow-y: auto;
             background-color: var(--secondary-color);
             padding: 20px;
         }
-        
+
         .message {
+            display: flex;
+            flex-direction: column;
             margin-bottom: 15px;
-            max-width: 80%;
+            max-width: 85%;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .message-content {
             padding: 10px 15px;
             border-radius: 18px;
             line-height: 1.4;
-            position: relative;
         }
-        
+
         .user-message {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+        .user-message .message-content {
             background-color: var(--primary-color);
             color: white;
-            margin-left: auto;
             border-bottom-right-radius: 5px;
         }
-        
+
         .bot-message {
+            align-self: flex-start;
+            align-items: flex-start;
+        }
+        .bot-message .message-content {
             background-color: var(--light-color);
             color: var(--dark-color);
             border: 1px solid #e2e8f0;
-            margin-right: auto;
             border-bottom-left-radius: 5px;
         }
-        
-        .typing-indicator {
+
+        .message-sender {
+            font-weight: 700;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+            color: var(--text-muted-color);
+        }
+        .user-message .message-sender { color: #d1d9ff; }
+
+        /* --- Interactive Elements --- */
+        .quick-replies {
             display: flex;
-            padding: 10px 15px;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
         }
-        
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            background-color: #a0aec0;
-            border-radius: 50%;
-            margin: 0 2px;
-            animation: typingAnimation 1.4s infinite ease-in-out;
+
+        .quick-reply-btn {
+            background-color: #edf2f7;
+            border: 1px solid transparent;
+            border-radius: 20px;
+            padding: 6px 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-        
-        .typing-dot:nth-child(1) { animation-delay: 0s; }
-        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
-        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
-        
-        @keyframes typingAnimation {
-            0%, 60%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-5px); }
+
+        .quick-reply-btn:hover, .quick-reply-btn:focus {
+            background-color: #e2e8f0;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
         }
-        
-        .features-section {
-            padding: 3rem 0;
-        }
-        
-        .feature-card {
-            background: white;
-            border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-            transition: transform 0.3s ease;
-        }
-        
-        .feature-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .feature-icon {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 1rem;
-        }
-        
+
         .emergency-section {
             background-color: #fff5f5;
             border-radius: 10px;
             padding: 1.5rem;
             margin-top: 2rem;
-            border-left: 4px solid var(--accent-color);
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
         }
         
-        .quick-replies {
+        /* --- Animations & Indicators --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .typing-indicator {
             display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 15px;
+            padding: 10px 0;
+            align-items: center;
         }
-        
-        .quick-reply-btn {
-            background-color: #edf2f7;
-            border: none;
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #a0aec0;
+            border-radius: 50%;
+            margin: 0 3px;
+            animation: typingAnimation 1.4s infinite ease-in-out both;
         }
-        
-        .quick-reply-btn:hover {
-            background-color: #e2e8f0;
+
+        .typing-dot:nth-child(1) { animation-delay: 0s; }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1.0); }
         }
-        
-        footer {
-            background-color: var(--dark-color);
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
-        
+
+        /* --- Mood Tracker Components --- */
         .sentiment-indicator {
             width: 100%;
-            height: 5px;
+            height: 6px;
             background: linear-gradient(to right, #ff6b6b, #feca57, #1dd1a1);
-            margin-bottom: 10px;
-            border-radius: 5px;
+            margin: 10px 0;
+            border-radius: 6px;
+            position: relative;
         }
         
         .sentiment-marker {
-            width: 10px;
-            height: 10px;
-            background-color: var(--primary-color);
+            width: 12px;
+            height: 12px;
+            background-color: var(--light-color);
+            border: 2px solid var(--primary-color);
             border-radius: 50%;
             position: absolute;
-            top: -2px;
-            transform: translateX(-50%);
+            top: 50%;
+            transform: translate(-50%, -50%);
+            transition: left 0.5s ease;
         }
     </style>
 </head>
 <body>
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+            <div class="container">
+                <a class="navbar-brand fw-bold" href="#">
+                    <i class="fas fa-brain me-2" style="color: var(--primary-color);"></i>MindCare AI
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Resources</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    </ul>
+                    <button class="btn btn-outline-primary ms-lg-3"><i class="fas fa-user me-1"></i> Login</button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <div class="container text-center">
+                <h1 class="display-4 fw-bold mb-3">Your 24/7 Mental Health Companion</h1>
+                <p class="lead mb-4">Confidential, compassionate AI support whenever you need it.</p>
+            </div>
+        </section>
+
         <div class="container">
-            <a class="navbar-brand" href="#">
-                <i class="fas fa-brain me-2"></i>MindCare AI
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Resources</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Contact</a>
-                    </li>
-                </ul>
-                <button class="btn btn-outline-primary ms-3" id="login-btn">
-                    <i class="fas fa-user me-1"></i> Login
-                </button>
-            </div>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="container text-center">
-            <h1 class="display-4 fw-bold mb-3">Your 24/7 Mental Health Companion</h1>
-            <p class="lead mb-4">Confidential, compassionate AI support whenever you need it</p>
-            <div class="d-flex justify-content-center gap-3">
-                <button class="btn btn-light btn-lg px-4">
-                    <i class="fas fa-play me-2"></i>How it works
-                </button>
-                <button class="btn btn-outline-light btn-lg px-4">
-                    <i class="fas fa-book me-2"></i>Learn More
-                </button>
-            </div>
-        </div>
-    </section>
-
-    <div class="container">
-        <!-- Mood Tracker -->
-        <div class="row mb-4">
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-chart-line me-2 text-primary"></i>Your Mood Tracker
-                        </h5>
-                        <div class="sentiment-indicator">
-                            <div class="sentiment-marker" style="left: 75%;"></div>
-                        </div>
-                        <p class="text-muted small">Your current emotional state: Generally Positive</p>
-                        <canvas id="moodChart" height="150"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card shadow-sm h-100">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            <i class="fas fa-lightbulb me-2 text-warning"></i>Today's Wellness Tip
-                        </h5>
-                        <div class="p-3 bg-light rounded mb-3">
-                            <p class="mb-0">"Practice gratitude by writing down three things you're thankful for today. This simple exercise can boost your mood and shift your perspective."</p>
-                        </div>
-                        <button class="btn btn-sm btn-outline-primary">
-                            <i class="fas fa-plus me-1"></i>Save Tip
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Chatbot Section -->
-        <div class="row">
-            <div class="col-lg-8 mx-auto">
-                <div class="chat-container">
-                    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
-                        <div>
-                            <i class="fas fa-robot me-2"></i>
-                            <span>MindCare Assistant</span>
-                        </div>
-                        <div class="dropdown">
-                            <button class="btn btn-sm btn-light dropdown-toggle" type="button" id="chatOptions" data-bs-toggle="dropdown">
-                                <i class="fas fa-cog"></i>
-                            </button>
-                            <ul class="dropdown-menu dropdown-menu-end">
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Chat History</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-moon me-2"></i>Dark Mode</a></li>
-                                <li><hr class="dropdown-divider"></li>
-                                <li><a class="dropdown-item" href="#"><i class="fas fa-trash me-2"></i>Clear Chat</a></li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="card-body chat-box" id="chat-history">
-                        <!-- Sample conversation -->
-                        <div class="message bot-message">
-                            <div class="fw-bold mb-1">MindCare Assistant</div>
-                            <p>Hello there! I'm here to support you. How are you feeling today?</p>
-                            <div class="quick-replies mt-2">
-                                <button class="quick-reply-btn">I'm feeling anxious</button>
-                                <button class="quick-reply-btn">I'm feeling down</button>
-                                <button class="quick-reply-btn">I'm okay, thanks</button>
+            <div class="row mb-4 g-4">
+                <div class="col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title"><i class="fas fa-chart-line me-2 text-primary"></i>Your Mood Tracker</h5>
+                            <div class="sentiment-indicator">
+                                <div class="sentiment-marker" id="sentiment-marker" style="left: 75%;"></div>
+                            </div>
+                            <p class="text-muted small">Current emotional state: <strong id="sentiment-text">Generally Positive</strong></p>
+                            <div class="mt-auto">
+                                <canvas id="moodChart" height="120"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="card-footer bg-light">
-                        <div class="quick-replies mb-2">
-                            <button class="quick-reply-btn">Coping strategies</button>
-                            <button class="quick-reply-btn">Breathing exercises</button>
-                            <button class="quick-reply-btn">Self-care tips</button>
-                        </div>
-                        <div class="input-group">
-                            <button class="btn btn-outline-secondary" type="button" id="mood-selector">
-                                <i class="far fa-smile"></i>
-                            </button>
-                            <input type="text" id="user-input" class="form-control" placeholder="Type a message...">
-                            <button class="btn btn-primary" id="send-btn">
-                                <i class="fas fa-paper-plane"></i>
-                            </button>
-                        </div>
-                        <div class="text-center mt-2">
-                            <small class="text-muted">MindCare AI is not a substitute for professional help. In crisis? <a href="#" class="text-danger">Get immediate assistance</a></small>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body">
+                            <h5 class="card-title"><i class="fas fa-lightbulb me-2 text-warning"></i>Today's Wellness Tip</h5>
+                            <div class="p-3 bg-light rounded mb-3">
+                                <p class="mb-0">"Practice gratitude by writing down three things you're thankful for today. This simple exercise can boost your mood and shift your perspective."</p>
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-plus me-1"></i>Save Tip</button>
                         </div>
                     </div>
                 </div>
-                
-                <!-- Emergency Resources -->
-                <div class="emergency-section">
-                    <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Emergency Resources</h5>
-                    <p>If you're in crisis or experiencing suicidal thoughts, please contact these services immediately:</p>
-                    <ul class="list-unstyled">
-                        <li class="mb-1"><i class="fas fa-phone-alt me-2 text-primary"></i> National Suicide Prevention Lifeline: <strong>1-800-273-8255</strong></li>
-                        <li class="mb-1"><i class="fas fa-globe me-2 text-primary"></i> Crisis Text Line: Text <strong>HOME</strong> to 741741</li>
-                        <li><i class="fas fa-map-marker-alt me-2 text-primary"></i> Find a local mental health professional</li>
-                    </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="chat-container bg-white">
+                        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center p-3">
+                            <div><i class="fas fa-robot me-2"></i><strong>MindCare Assistant</strong></div>
+                            <div class="dropdown">
+                                <button class="btn btn-sm btn-light dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Chat Options"><i class="fas fa-cog"></i></button>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-history me-2"></i>Chat History</a></li>
+                                    <li><a class="dropdown-item" href="#"><i class="fas fa-moon me-2"></i>Toggle Dark Mode</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#" id="clear-chat-btn"><i class="fas fa-trash me-2"></i>Clear Chat</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-box" id="chat-box">
+                            </div>
+                        
+                        <div class="card-footer bg-light p-3">
+                             <div class="quick-replies mb-3" id="persistent-quick-replies">
+                                <button class="quick-reply-btn">Coping strategies</button>
+                                <button class="quick-reply-btn">Breathing exercises</button>
+                                <button class="quick-reply-btn">Self-care tips</button>
+                            </div>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" type="button" id="mood-selector-btn" aria-label="Select Mood"><i class="far fa-smile"></i></button>
+                                <input type="text" id="user-input" class="form-control" placeholder="Type a message..." aria-label="User message input">
+                                <button class="btn btn-primary" id="send-btn" aria-label="Send Message"><i class="fas fa-paper-plane"></i></button>
+                            </div>
+                            <div class="text-center mt-2">
+                                <small class="text-muted">MindCare AI is not a substitute for professional help. In crisis? <a href="#emergency-resources" class="text-danger fw-bold">Get immediate assistance</a></small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div id="emergency-resources" class="emergency-section">
+                        <h5><i class="fas fa-exclamation-triangle me-2 text-danger"></i>Emergency Resources</h5>
+                        <p>If you're in crisis or need immediate support, please contact these services:</p>
+                        <ul class="list-unstyled">
+                            <li class="mb-1"><i class="fas fa-phone-alt me-2 text-primary"></i> National Suicide Prevention Lifeline: <strong>1-800-273-8255</strong></li>
+                            <li class="mb-1"><i class="fas fa-globe me-2 text-primary"></i> Crisis Text Line: Text <strong>HOME</strong> to 741741</li>
+                            <li><i class="fas fa-map-marker-alt me-2 text-primary"></i> <a href="#">Find a local mental health professional</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <!-- Features Section -->
-        <section class="features-section">
-            <div class="row text-center mb-4">
-                <div class="col">
+            
+            <section class="features-section">
+                <div class="text-center mb-5">
                     <h2>How MindCare Can Help You</h2>
                     <p class="lead text-muted">Your mental wellbeing matters. We're here to support you.</p>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-comments"></i>
-                        </div>
-                        <h4>24/7 Support</h4>
-                        <p>Talk anytime, anywhere. Our AI companion is always available when you need someone to listen.</p>
-                    </div>
+                <div class="row">
+                    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon h1 text-primary mb-3"><i class="fas fa-comments"></i></div><h4>24/7 Support</h4><p>Talk anytime, anywhere. Our AI companion is always available when you need someone to listen.</p></div></div>
+                    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon h1 text-primary mb-3"><i class="fas fa-lock"></i></div><h4>Confidential</h4><p>Your conversations are private and secure. Share your thoughts in a safe and non-judgmental space.</p></div></div>
+                    <div class="col-md-4"><div class="feature-card text-center"><div class="feature-icon h1 text-primary mb-3"><i class="fas fa-heart"></i></div><h4>Personalized</h4><p>Get guidance tailored to your needs using evidence-based techniques like CBT and mindfulness.</p></div></div>
                 </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h4>Confidential</h4>
-                        <p>Your conversations are private and secure. Share your thoughts without judgment.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-heart"></i>
-                        </div>
-                        <h4>Personalized</h4>
-                        <p>Responses tailored to your emotional state and needs, with evidence-based techniques.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </div>
+            </section>
+        </div>
+    </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-3">
                     <h5>MindCare AI</h5>
-                    <p>Providing compassionate mental health support through artificial intelligence.</p>
-                    <div class="social-icons mt-3">
-                        <a href="#" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-white me-2"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
+                    <p>Compassionate mental health support through artificial intelligence.</p>
                 </div>
-                <div class="col-md-2">
-                    <h5>Resources</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">Articles</a></li>
-                        <li><a href="#" class="text-white">Exercises</a></li>
-                        <li><a href="#" class="text-white">Meditations</a></li>
-                        <li><a href="#" class="text-white">Self-Assessment</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-2">
-                    <h5>Company</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="text-white">About Us</a></li>
-                        <li><a href="#" class="text-white">Privacy Policy</a></li>
-                        <li><a href="#" class="text-white">Terms of Service</a></li>
-                        <li><a href="#" class="text-white">Contact</a></li>
-                    </ul>
-                </div>
-                <div class="col-md-4">
+                <div class="col-md-2 mb-3"><h5>Resources</h5><ul class="list-unstyled"><li><a href="#" class="text-white">Articles</a></li><li><a href="#" class="text-white">Exercises</a></li></ul></div>
+                <div class="col-md-2 mb-3"><h5>Company</h5><ul class="list-unstyled"><li><a href="#" class="text-white">About Us</a></li><li><a href="#" class="text-white">Privacy Policy</a></li></ul></div>
+                <div class="col-md-4 mb-3">
                     <h5>Newsletter</h5>
-                    <p>Subscribe to receive mental health tips and updates.</p>
-                    <div class="input-group mb-3">
-                        <input type="email" class="form-control" placeholder="Your email">
-                        <button class="btn btn-primary" type="button">Subscribe</button>
-                    </div>
+                    <p>Subscribe for mental health tips and updates.</p>
+                    <div class="input-group"><input type="email" class="form-control" placeholder="Your email"><button class="btn btn-primary" type="button">Subscribe</button></div>
                 </div>
             </div>
             <hr class="my-4 bg-light">
-            <div class="row">
-                <div class="col text-center">
-                    <p class="mb-0 small">© 2023 MindCare AI. All rights reserved. Not a substitute for professional medical advice.</p>
-                </div>
-            </div>
+            <p class="text-center small mb-0">© 2025 MindCare AI. All Rights Reserved. Not a substitute for professional medical advice.</p>
         </div>
     </footer>
 
-    <!-- Modal for Mood Selection -->
     <div class="modal fade" id="moodModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">How are you feeling?</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <h5 class="modal-title">How are you feeling right now?</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
                     <div class="row g-3">
-                        <div class="col-4">
-                            <button class="btn btn-outline-primary w-100 py-3 mood-option" data-mood="happy">
-                                <i class="far fa-laugh-beam fa-2x mb-2"></i><br>
-                                Happy
-                            </button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-secondary w-100 py-3 mood-option" data-mood="neutral">
-                                <i class="far fa-meh fa-2x mb-2"></i><br>
-                                Neutral
-                            </button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-warning w-100 py-3 mood-option" data-mood="anxious">
-                                <i class="far fa-flushed fa-2x mb-2"></i><br>
-                                Anxious
-                            </button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-info w-100 py-3 mood-option" data-mood="sad">
-                                <i class="far fa-sad-tear fa-2x mb-2"></i><br>
-                                Sad
-                            </button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-danger w-100 py-3 mood-option" data-mood="angry">
-                                <i class="far fa-angry fa-2x mb-2"></i><br>
-                                Angry
-                            </button>
-                        </div>
-                        <div class="col-4">
-                            <button class="btn btn-outline-success w-100 py-3 mood-option" data-mood="tired">
-                                <i class="far fa-tired fa-2x mb-2"></i><br>
-                                Tired
-                            </button>
-                        </div>
+                        <div class="col-4"><button class="btn btn-outline-success w-100 py-3 mood-option" data-mood="Happy" data-value="90"><i class="far fa-laugh-beam fa-2x mb-2"></i><br>Happy</button></div>
+                        <div class="col-4"><button class="btn btn-outline-primary w-100 py-3 mood-option" data-mood="Neutral" data-value="60"><i class="far fa-meh fa-2x mb-2"></i><br>Neutral</button></div>
+                        <div class="col-4"><button class="btn btn-outline-warning w-100 py-3 mood-option" data-mood="Anxious" data-value="40"><i class="far fa-flushed fa-2x mb-2"></i><br>Anxious</button></div>
+                        <div class="col-4"><button class="btn btn-outline-info w-100 py-3 mood-option" data-mood="Sad" data-value="25"><i class="far fa-sad-tear fa-2x mb-2"></i><br>Sad</button></div>
+                        <div class="col-4"><button class="btn btn-outline-danger w-100 py-3 mood-option" data-mood="Angry" data-value="15"><i class="far fa-angry fa-2x mb-2"></i><br>Angry</button></div>
+                        <div class="col-4"><button class="btn btn-outline-secondary w-100 py-3 mood-option" data-mood="Tired" data-value="30"><i class="far fa-tired fa-2x mb-2"></i><br>Tired</button></div>
                     </div>
-                </div>
-                <div class="modal-footer justify-content-center">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
         </div>
@@ -469,153 +365,185 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // Initialize mood chart
-        const moodCtx = document.getElementById('moodChart').getContext('2d');
-        const moodChart = new Chart(moodCtx, {
-            type: 'line',
-            data: {
-                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-                datasets: [{
-                    label: 'Mood Level',
-                    data: [65, 59, 70, 71, 56, 75, 80],
-                    fill: true,
-                    backgroundColor: 'rgba(94, 114, 228, 0.1)',
-                    borderColor: 'rgba(94, 114, 228, 1)',
-                    tension: 0.3,
-                    pointBackgroundColor: 'rgba(94, 114, 228, 1)'
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                },
-                scales: {
-                    y: {
-                        display: false,
-                        min: 0,
-                        max: 100
-                    },
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // Mood modal functionality
-        const moodModal = new bootstrap.Modal(document.getElementById('moodModal'));
-        document.getElementById('mood-selector').addEventListener('click', () => {
-            moodModal.show();
-        });
-
-        document.querySelectorAll('.mood-option').forEach(button => {
-            button.addEventListener('click', () => {
-                const mood = button.getAttribute('data-mood');
-                // Here you would typically send this mood data to your backend
-                console.log(`User selected mood: ${mood}`);
-                moodModal.hide();
-            });
-        });
-
-        // Quick reply functionality
-        document.querySelectorAll('.quick-reply-btn').forEach(button => {
-            button.addEventListener('click', () => {
-                const message = button.textContent;
-                document.getElementById('user-input').value = message;
-            });
-        });
-
-        // Chat functionality
-        document.getElementById('send-btn').addEventListener('click', sendMessage);
-        document.getElementById('user-input').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') sendMessage();
-        });
-
-        function sendMessage() {
+            // --- DOM Element Selection ---
+            const chatBox = document.getElementById('chat-box');
             const userInput = document.getElementById('user-input');
-            const message = userInput.value.trim();
+            const sendBtn = document.getElementById('send-btn');
+            const moodSelectorBtn = document.getElementById('mood-selector-btn');
+            const clearChatBtn = document.getElementById('clear-chat-btn');
+            const sentimentMarker = document.getElementById('sentiment-marker');
+            const sentimentText = document.getElementById('sentiment-text');
+            const moodModal = new bootstrap.Modal(document.getElementById('moodModal'));
+            const moodChartCtx = document.getElementById('moodChart').getContext('2d');
+
+            // --- State Management ---
+            let moodChart;
+            const initialMoodData = [65, 59, 70, 71, 56, 75, 80];
+
+            // --- Bot Logic ---
+            const botResponses = [
+                { keywords: ["anxious", "worried", "stressed"], response: "I'm sorry to hear you're feeling anxious. It can be really tough. Would you like to try a guided breathing exercise to help calm your body and mind?" },
+                { keywords: ["down", "sad", "depressed"], response: "It's completely okay to feel down sometimes. Thank you for sharing that with me. Could you tell me a little more about what's on your mind? I'm here to listen." },
+                { keywords: ["okay", "fine"], response: "That's good to hear! Is there anything specific you'd like to talk about or explore today? We could discuss self-care, goals, or anything else." },
+                { keywords: ["coping", "deal with"], response: "There are many effective coping strategies. Some popular ones are grounding techniques (like the 5-4-3-2-1 method), journaling, or engaging in a hobby. Does one of those sound interesting to you?" },
+                { keywords: ["breathing", "breathe"], response: "Great idea. Let's try 'Box Breathing'. Inhale for 4 seconds, hold for 4, exhale for 4, and hold for 4. Repeat this a few times. It can be very centering." },
+                { keywords: ["self-care", "self care"], response: "Self-care is vital! It could be as simple as drinking a glass of water, stretching for 5 minutes, or listening to your favorite song. What's one small kind thing you could do for yourself right now?" },
+                { keywords: ["hello", "hi"], response: "Hello there! I'm MindCare AI. How are you feeling today?" }
+            ];
             
-            if (message) {
-                // Add user message to chat
-                addMessageToChat(message, 'user');
-                userInput.value = '';
-                
-                // Show typing indicator
-                showTypingIndicator();
-                
-                // Simulate bot response after a delay
-                setTimeout(() => {
-                    removeTypingIndicator();
-                    const botResponse = getBotResponse(message);
-                    addMessageToChat(botResponse, 'bot');
-                }, 1500);
-            }
-        }
-
-        function addMessageToChat(message, sender) {
-            const chatHistory = document.getElementById('chat-history');
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', sender === 'user' ? 'user-message' : 'bot-message');
+            // --- Core Functions ---
             
-            if (sender === 'bot') {
-                messageDiv.innerHTML = `<div class="fw-bold mb-1">MindCare Assistant</div><p>${message}</p>`;
-            } else {
-                messageDiv.innerHTML = `<div class="fw-bold mb-1">You</div><p>${message}</p>`;
-            }
+            /**
+             * Initializes the application, setting up the chart and initial messages.
+             */
+            const initializeApp = () => {
+                initializeMoodChart();
+                addBotMessage("Hello! I'm MindCare AI, your supportive companion. How can I help you today?", [
+                    "I'm feeling anxious", "I'm feeling down", "Just Browse"
+                ]);
+            };
+
+            /**
+             * Renders a message in the chat box.
+             * @param {string} text - The message content.
+             * @param {string} sender - 'user' or 'bot'.
+             * @param {string[]} [quickReplies] - Optional array of strings for quick reply buttons.
+             */
+            const addMessage = (text, sender, quickReplies) => {
+                const messageWrapper = document.createElement('div');
+                messageWrapper.classList.add('message', `${sender}-message`);
+
+                let repliesHTML = '';
+                if (quickReplies && quickReplies.length > 0) {
+                    repliesHTML = '<div class="quick-replies">';
+                    quickReplies.forEach(reply => {
+                        repliesHTML += `<button class="quick-reply-btn">${reply}</button>`;
+                    });
+                    repliesHTML += '</div>';
+                }
+
+                messageWrapper.innerHTML = `
+                    <div class="message-sender">${sender === 'user' ? 'You' : 'MindCare Assistant'}</div>
+                    <div class="message-content">
+                        <p class="mb-0">${text}</p>
+                        ${repliesHTML}
+                    </div>`;
+
+                chatBox.appendChild(messageWrapper);
+                chatBox.scrollTop = chatBox.scrollHeight;
+            };
+
+            const addUserMessage = (text) => addMessage(text, 'user');
+            const addBotMessage = (text, quickReplies) => addMessage(text, 'bot', quickReplies);
             
-            chatHistory.appendChild(messageDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function showTypingIndicator() {
-            const chatHistory = document.getElementById('chat-history');
-            const typingDiv = document.createElement('div');
-            typingDiv.classList.add('typing-indicator');
-            typingDiv.id = 'typing-indicator';
-            typingDiv.innerHTML = `
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            `;
-            chatHistory.appendChild(typingDiv);
-            chatHistory.scrollTop = chatHistory.scrollHeight;
-        }
-
-        function removeTypingIndicator() {
-            const typingIndicator = document.getElementById('typing-indicator');
-            if (typingIndicator) {
-                typingIndicator.remove();
-            }
-        }
-
-        function getBotResponse(userMessage) {
-            // This is a simplified version - in a real app, you'd call an API
-            const responses = {
-                "hello": "Hello! How are you feeling today?",
-                "hi": "Hi there! What's on your mind?",
-                "how are you": "I'm here to support you. How can I help today?",
-                "i'm feeling anxious": "I'm sorry to hear you're feeling anxious. Would you like to try a breathing exercise or talk about what's bothering you?",
-                "i'm feeling down": "It's okay to feel this way sometimes. Would you like to share more about what's making you feel down?",
-                "i'm okay": "That's good to hear! Is there anything specific you'd like to talk about or explore today?",
-                "coping strategies": "Here are a few coping strategies you might try: 1) Deep breathing, 2) Going for a walk, 3) Journaling your thoughts. Which one appeals to you?",
-                "breathing exercises": "Let's try square breathing: Breathe in for 4 seconds, hold for 4 seconds, exhale for 4 seconds, and wait for 4 seconds before repeating. Would you like to try this now?",
-                "self-care tips": "Self-care is important! Some ideas: 1) Drink water, 2) Take a break from screens, 3) Do something creative. What self-care activity sounds good to you right now?"
+            /**
+             * Shows a typing indicator in the chat box.
+             */
+            const showTypingIndicator = () => {
+                if (document.getElementById('typing-indicator')) return; // Prevent multiple indicators
+                const typingDiv = document.createElement('div');
+                typingDiv.id = 'typing-indicator';
+                typingDiv.className = 'message bot-message';
+                typingDiv.innerHTML = `
+                    <div class="message-content" style="padding: 10px 15px;">
+                      <div class="typing-indicator">
+                          <div class="typing-dot"></div>
+                          <div class="typing-dot"></div>
+                          <div class="typing-dot"></div>
+                      </div>
+                    </div>`;
+                chatBox.appendChild(typingDiv);
+                chatBox.scrollTop = chatBox.scrollHeight;
             };
             
-            const lowerMessage = userMessage.toLowerCase();
-            for (const [key, value] of Object.entries(responses)) {
-                if (lowerMessage.includes(key)) {
-                    return value;
-                }
-            }
+            /**
+             * Removes the typing indicator from the chat box.
+             */
+            const removeTypingIndicator = () => {
+                const indicator = document.getElementById('typing-indicator');
+                if (indicator) indicator.remove();
+            };
             
-            return "I'm listening you. Can you tell me more about how you're feeling?";
-        }
+            /**
+             * Simulates bot thinking and provides a response based on user input.
+             * @param {string} userText - The user's message.
+             */
+            const handleUserMessage = (userText) => {
+                if (!userText.trim()) return;
+
+                addUserMessage(userText);
+                userInput.value = '';
+                showTypingIndicator();
+
+                setTimeout(() => {
+                    removeTypingIndicator();
+                    const lowerUserText = userText.toLowerCase();
+                    let responseFound = false;
+
+                    for (const item of botResponses) {
+                        if (item.keywords.some(keyword => lowerUserText.includes(keyword))) {
+                            addBotMessage(item.response);
+                            responseFound = true;
+                            break;
+                        }
+                    }
+
+                    if (!responseFound) {
+                        addBotMessage("I hear you. Could you tell me a bit more about that?");
+                    }
+                }, 1500); // Simulate network delay
+            };
+            
+            // --- Chart & Mood Functions ---
+            const initializeMoodChart = () => {
+                moodChart = new Chart(moodChartCtx, {
+                    type: 'line',
+                    data: {
+                        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                        datasets: [{
+                            label: 'Mood Level', data: initialMoodData, fill: true,
+                            backgroundColor: 'rgba(94, 114, 228, 0.1)',
+                            borderColor: 'rgba(94, 114, 228, 1)',
+                            tension: 0.4, pointBackgroundColor: 'rgba(94, 114, 228, 1)'
+                        }]
+                    },
+                    options: {
+                        responsive: true, maintainAspectRatio: false,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { display: false, min: 0, max: 100 },
+                            x: { grid: { display: false } }
+                        }
+                    }
+                });
+            };
+
+            const updateMood = (moodValue, moodText) => {
+                // Update the chart with a new value for the current day
+                const todayIndex = new Date().getDay() - 1; // 0=Sun, 1=Mon... Chart.js is 0-indexed
+                moodChart.data.datasets[0].data[todayIndex] = moodValue;
+                moodChart.update();
+                
+                // Update sentiment indicator
+                sentimentMarker.style.left = `${moodValue}%`;
+                sentimentText.textContent = moodText;
+            };
+
+            // --- Event Listeners ---
+            sendBtn.addEventListener('click', () => handleUserMessage(userInput.value));
+            userInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') handleUserMessage(userInput.value);
+            });
+            moodSelectorBtn.addEventListener('click', () => moodModal.show());
+            clearChatBtn.addEventListener('click', () => {
+                chatBox.innerHTML = '';
+                initializeApp();
+            });
+
+
+        });
     </script>
 </body>
 </html>
